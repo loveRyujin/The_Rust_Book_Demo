@@ -3,7 +3,11 @@ use std::io::ErrorKind;
 
 fn main() {
     // normal_error_handling();
-    concise_error_handling();
+    // concise_error_handling();
+    match return_error() {
+        Ok(file) => println!("File opened successfully"),
+        Err(e) => println!("Problem opening the file: {e:?}"),
+    }
 }
 
 fn normal_error_handling() {
@@ -34,6 +38,7 @@ fn concise_error_handling() {
     };
 }
 
-// func return_error() -> Result<File, std::io::Error> {
-//     let file = File::open("hello.txt")?;
-// }
+fn return_error() -> Result<File, std::io::Error> {
+    let file = File::open("hello.txt")?;
+    Ok(file)
+}
