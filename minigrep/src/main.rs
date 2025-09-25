@@ -4,7 +4,7 @@ use std::fs;
 fn main() {
     let args: Vec<String> = env::args().collect();
 
-    let cfg = parse_config(&args);
+    let cfg = Config::new(&args);
 
     println!("Searching for {}", cfg.query);
     println!("In file {}", cfg.file_path);
@@ -20,9 +20,11 @@ struct Config {
     file_path: String,
 }
 
-fn parse_config(args: &[String]) -> Config {
-    let query = args[1].clone();
-    let file_path = args[2].clone();
+impl Config {
+    fn new(args: &[String]) -> Self {
+        let query = args[1].clone();
+        let file_path = args[2].clone();
 
-    Config { query: query, file_path: file_path }
+        Self { query: query, file_path: file_path }
+    }
 }
