@@ -17,7 +17,12 @@ impl Config {
         let query = args[1].clone();
         let file_path = args[2].clone();
 
-        let ignore_case = env::var("IGNORE_CASE").is_ok();
+        let ignore_case: bool;
+        if args.len() > 3 {
+            ignore_case = args[3].parse::<bool>().is_ok();
+        } else {
+            ignore_case = env::var("IGNORE_CASE").is_ok();
+        }
 
         Ok(Self { query: query, file_path: file_path, ignore_case: ignore_case })
     }
