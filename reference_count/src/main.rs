@@ -1,4 +1,5 @@
 use std::rc::Rc;
+use crate::List::{Cons, Nil};
 
 #[derive(Debug)]
 enum List {
@@ -8,9 +9,15 @@ enum List {
 }
 
 fn main() {
-    let a = Rc::new(List::Cons(3, Rc::new(List::Cons(4, Rc::new(List::Cons(5, Rc::new(List::Nil)))))));
-    let b = List::Cons(1, Rc::clone(&a));
-    let c = List::Cons(2, Rc::clone(&a));
+    let a = Rc::new(Cons(3, Rc::new(Cons(4, Rc::new(Cons(5, Rc::new(Nil)))))));
+    println!("reference count after creating a: {}", Rc::strong_count(&a));
+    let b = Cons(1, Rc::clone(&a));
+    println!("reference count after creating b: {}", Rc::strong_count(&a));
     println!("{:#?}", b);
-    println!("{:#?}", c);
+    {
+        let c = Cons(2, Rc::clone(&a));
+        println!("reference count after creating c: {}", Rc::strong_count(&a));
+        println!("{:#?}", c);
+    }
+    println!("reference count after releasing c: {}", Rc::strong_count(&a));
 }
