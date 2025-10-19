@@ -11,4 +11,21 @@ fn main() {
 
     let recieved = rx.recv().unwrap();
     println!("Got: {}", recieved);
+
+
+    let (tx, rx) = mpsc::channel();
+    thread::spawn(move || {
+        let vals = vec![
+            String::from("Hello"),
+            String::from("World"),
+        ];
+
+        for val in vals {
+            tx.send(val).unwrap();
+        }
+    });
+
+    for recieved in rx {
+        println!("Got: {}", recieved);
+    }
 }
