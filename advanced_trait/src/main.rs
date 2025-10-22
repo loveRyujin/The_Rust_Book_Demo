@@ -31,6 +31,35 @@ impl Add<Meters> for Millmeters {
     }
 }
 
+trait Pilot {
+    fn fly(&self);
+}
+
+trait Wizard {
+    fn fly(&self);
+}
+
+struct Human;
+
+impl Pilot for Human {
+    fn fly(&self) {
+        println!("This is your captain speaking.");
+    }
+}
+
+impl Wizard for Human {
+    fn fly(&self) {
+        println!("Up!");
+    }
+}
+
+impl Human {
+    fn fly(&self) {
+        println!("*waving arms furiously*");
+    }
+}
+
+
 fn main() {
     assert_eq!(
         Point {x: 1, y: 1} + Point {x: 2, y: 2},
@@ -42,5 +71,12 @@ fn main() {
         Millmeters(1001)
     );
 
-    println!("successfully assert!")
+    println!("successfully assert!\n");
+
+    let person = Human;
+    person.fly();
+    Pilot::fly(&person);
+    Wizard::fly(&person);
+
+    println!("successfully call different methods!");
 }
