@@ -1,4 +1,18 @@
 use std::ops::Add;
+use std::fmt;
+
+trait OutlinePrint: fmt::Display {
+    fn outline_print(&self) {
+        let output = self.to_string();
+        let len = output.len();
+        println!("{}", "*".repeat(len + 4));
+        println!("*{}*", " ".repeat(len + 2));
+        println!("* {output} *");
+        println!("*{}*", " ".repeat(len + 2));
+        println!("{}", "*".repeat(len + 4));
+    }
+}
+
 
 #[derive(Debug, Copy, Clone, PartialEq)]
 struct Point {
@@ -16,6 +30,14 @@ impl Add for Point {
         }
     }
 }
+
+impl fmt::Display for Point {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "({}, {})", self.x, self.y)
+    }
+}
+
+impl OutlinePrint for Point {}
 
 #[derive(Debug, PartialEq)]
 struct Millmeters(i32);
@@ -61,10 +83,12 @@ impl Human {
 
 
 fn main() {
+    let sum = Point {x: 1, y: 1} + Point {x: 2, y: 2};
     assert_eq!(
-        Point {x: 1, y: 1} + Point {x: 2, y: 2},
+        sum,
         Point {x: 3, y: 3}
     );
+    sum.outline_print();
 
     assert_eq!(
         Millmeters(1) + Meters(1),
