@@ -1,11 +1,23 @@
-use std::net::TcpListener;
+use std::net::{TcpListener, TcpStream};
+use std::io::{BufReader, prelude::*};
 fn main() {
     let listener = TcpListener::bind("127.0.0.1:7878").unwrap();
 
-    let mut i = 1;
     for stream in listener.incoming() {
         let stream = stream.unwrap();
-        println!("incoming request{}!", i);
-        i += 1;
+        
+        handle_connect(stream);
     }
+}
+
+fn handle_connect(stream: TcpStream) {
+    let buf_reader = BufReader::new(stream);
+
+    let http_request: Vec<_> = buf_reader
+        .lines()
+        .map(|result| result.unwrap())
+        .take_while(|line| !line.is_empty() )
+        .collect();
+
+    println!("Request: {http_request:#?}");
 }
